@@ -1,6 +1,6 @@
-import { ParseResult } from "../../types";
-import { getErrorMessageSpecialOptionNeedsToBeStandalone } from "./messages";
-import { createErrorResult, createSuccessResult } from "./parse-util";
+import { ParseResult } from '../../types';
+import { getErrorMessageSpecialOptionNeedsToBeStandalone } from './messages';
+import { createErrorResult, createSuccessResult } from './parse-util';
 
 export function handleSpecialOptions(
   args: readonly string[]

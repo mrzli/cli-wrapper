@@ -400,15 +400,11 @@ describe('parse', () => {
         },
         {
           input: ['-abu', 'value'],
-          expected: createErrorResult(
-            "Unknown option 'u'.",
-          ),
+          expected: createErrorResult("Unknown option 'u'."),
         },
         {
           input: ['-abU', 'value'],
-          expected: createErrorResult(
-            "Unknown option 'u'.",
-          ),
+          expected: createErrorResult("Unknown option 'u'."),
         },
         {
           input: ['-ab', 'value'],

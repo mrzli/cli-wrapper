@@ -51,7 +51,11 @@ export function getOptionShortToLongNameMap(
 
 export function isValidOptionString(optionStr: string): boolean {
   if (optionStr.startsWith('--')) {
-    if (optionStr.startsWith('--no-') ? optionStr.length <= 6 : optionStr.length <= 3) {
+    if (
+      optionStr.startsWith('--no-')
+        ? optionStr.length <= 6
+        : optionStr.length <= 3
+    ) {
       return false;
     }
     return LONG_FORM_OPTION_NAME_REGEX.test(optionStr);
@@ -62,7 +66,8 @@ export function isValidOptionString(optionStr: string): boolean {
   }
 }
 
-const LONG_FORM_OPTION_NAME_REGEX = /^--(?:no-)?[a-z][\da-z]*(?:-[a-z][\da-z]*)*$/;
+const LONG_FORM_OPTION_NAME_REGEX =
+  /^--(?:no-)?[a-z][\da-z]*(?:-[a-z][\da-z]*)*$/;
 const SHORT_FORM_OPTION_NAME_REGEX = /^-[A-Za-z]+$/;
 
 export function getOptionsFromString(optionsStr: string): readonly string[] {
@@ -98,7 +103,7 @@ export function normalizeOptionName(
         unknownOption: true,
         name: positiveOptionName,
         negated,
-      }
+      };
     }
   } else {
     negated = optionName.startsWith('no-');
