@@ -2,7 +2,11 @@
   "name": "@gmjs/cli-wrapper",
   "version": "0.0.1",
   "description": "cli-wrapper",
-  "author": "Goran Mržljak (goran.mrzljak@gmail.com)",
+  "author": {
+    "name": "Goran Mržljak",
+    "email": "goran.mrzljak@gmail.com",
+    "url": "https://mrzli.com"
+  },
   "license": "MIT",
   "keywords": [],
   "repository": {
@@ -26,7 +30,7 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@gmjs/eslint-config": "^0.0.6",
+    "@gmjs/eslint-config": "^0.0.7",
     "@gmjs/prettier-config": "^1.0.0",
     "@jest/globals": "^29.5.0",
     "@types/eslint": "^8.37.0",
