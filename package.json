@@ -8,20 +8,38 @@
     "url": "https://mrzli.com"
   },
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "command-line",
+    "argument-parser",
+    "option-parser",
+    "input-validation",
+    "cli-tool",
+    "cli-library",
+    "cli-utility",
+    "command-line-tool",
+    "command-line-parser",
+    "command-line-utility",
+    "cli-options",
+    "cli-validation",
+    "nodejs-cli"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/mrzli/cli-wrapper"
   },
+  "homepage": "https://github.com/mrzli/cli-wrapper",
   "main": "dist/index.js",
-  "prettier": "@gmjs/prettier-config",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start:dev": "ts-node src/index.ts",
     "lint": "eslint --fix . && prettier --write .",
     "lint:nofix": "eslint . && prettier .",
     "test-only": "jest",
     "test": "npm run lint && npm run test-only",
-    "build-only": "rm -rf ./dist && tsc",
+    "build-only": "shx rm -rf ./dist && tsc --project tsconfig.lib.json",
     "build": "npm run test && npm run build-only",
     "pub-only": "npm publish --access public",
     "pub": "npm run build && npm run pub-only"
@@ -30,8 +48,8 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@gmjs/eslint-config": "^0.0.7",
-    "@gmjs/prettier-config": "^1.0.0",
+    "@gmjs/eslint-config": "^0.0.8",
+    "@gmjs/prettier-config": "^1.0.2",
     "@jest/globals": "^29.5.0",
     "@types/eslint": "^8.37.0",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
@@ -44,11 +62,13 @@
     "eslint-plugin-unicorn": "^46.0.0",
     "jest": "^29.5.0",
     "prettier": "^2.8.8",
+    "shx": "^0.3.4",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
   "engines": {
     "node": ">=16.0.0"
-  }
+  },
+  "prettier": "@gmjs/prettier-config"
 }
