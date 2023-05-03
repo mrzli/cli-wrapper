@@ -1,14 +1,14 @@
-import type { Option } from './option';
+import type { CliOption } from './option';
 
 export interface CliConfig {
-  readonly meta: Meta;
-  readonly options: Options;
+  readonly meta: CliMeta;
+  readonly options: CliOptions;
 }
 
-export interface Meta {
+export interface CliMeta {
   readonly version: string;
 }
 
-export interface Options {
-  readonly [key: string]: Option;
+export interface CliOptions {
+  readonly [key: string]: CliOption;
 }

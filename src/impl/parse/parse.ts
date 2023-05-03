@@ -1,8 +1,8 @@
 import { CliConfig, ParseResult, ParseResultOption } from '../../types';
 import { getErrorMessageInvalidOptionFormat } from './messages';
 import {
-  createErrorResult,
-  createSuccessResult,
+  createErrorParseResult,
+  createSuccessParseResult,
   getOptionNameMap,
   getOptionShortToLongNameMap,
   getOptionsFromString,
@@ -27,7 +27,9 @@ export function parse(args: readonly string[], config: CliConfig): ParseResult {
   while (index < args.length) {
     const optionStr = args[index];
     if (!isValidOptionString(optionStr)) {
-      return createErrorResult(getErrorMessageInvalidOptionFormat(optionStr));
+      return createErrorParseResult(
+        getErrorMessageInvalidOptionFormat(optionStr)
+      );
     }
 
     const optionNames = getOptionsFromString(optionStr);
@@ -40,28 +42,30 @@ export function parse(args: readonly string[], config: CliConfig): ParseResult {
       );
 
       if (unknownOption) {
-        return createErrorResult(`Unknown option '${name}'.`);
+        return createErrorParseResult(`Unknown option '${name}'.`);
       }
 
       const option = optionNameMap.get(name);
       if (!option) {
-        return createErrorResult(`Unknown option '${name}'.`);
+        return createErrorParseResult(`Unknown option '${name}'.`);
       }
 
       if (negated && option.type !== 'boolean') {
-        return createErrorResult(
+        return createErrorParseResult(
           `'${name}' is not a boolean option. Only boolean options can be negated.`
         );
       }
 
       if (usedOptionsSet.has(name)) {
-        return createErrorResult(`Option '${name}' is used more than once.`);
+        return createErrorParseResult(
+          `Option '${name}' is used more than once.`
+        );
       }
       usedOptionsSet.add(name);
 
       if (option.type === 'string') {
         if (index >= args.length - 1 || args[index + 1].startsWith('-')) {
-          return createErrorResult(`Option '${name}' requires a value.`);
+          return createErrorParseResult(`Option '${name}' requires a value.`);
         }
         index++;
 
@@ -76,13 +80,14 @@ export function parse(args: readonly string[], config: CliConfig): ParseResult {
           : {
               type: 'string',
               name,
+              multiple: false,
               value,
             };
 
         options.push(resultOption);
       } else if (option.type === 'boolean') {
         if (index < args.length - 1 && !args[index + 1].startsWith('-')) {
-          return createErrorResult(
+          return createErrorParseResult(
             `Boolean option '${name}' does not take a value.`
           );
         }
@@ -103,27 +108,29 @@ export function parse(args: readonly string[], config: CliConfig): ParseResult {
         );
 
         if (unknownOption) {
-          return createErrorResult(`Unknown option '${name}'.`);
+          return createErrorParseResult(`Unknown option '${name}'.`);
         }
 
         const option = optionNameMap.get(name);
         if (!option) {
-          return createErrorResult(`Unknown option '${name}'.`);
+          return createErrorParseResult(`Unknown option '${name}'.`);
         }
 
         if (negated && option.type !== 'boolean') {
-          return createErrorResult(
+          return createErrorParseResult(
             `'${name}' is not a boolean option. Only boolean options can be negated.`
           );
         }
 
         if (usedOptionsSet.has(name)) {
-          return createErrorResult(`Option '${name}' is used more than once.`);
+          return createErrorParseResult(
+            `Option '${name}' is used more than once.`
+          );
         }
         usedOptionsSet.add(name);
 
         if (option.type === 'string') {
-          return createErrorResult(
+          return createErrorParseResult(
             `'${name}' is not a boolean option. Only boolean options can be part of options list.`
           );
         } else if (option.type === 'boolean') {
@@ -138,7 +145,7 @@ export function parse(args: readonly string[], config: CliConfig): ParseResult {
       }
 
       if (index < args.length - 1 && !args[index + 1].startsWith('-')) {
-        return createErrorResult(
+        return createErrorParseResult(
           `Option list '${optionNames.join('')}' does not take a value.`
         );
       }
@@ -147,5 +154,5 @@ export function parse(args: readonly string[], config: CliConfig): ParseResult {
     index++;
   }
 
-  return createSuccessResult(options);
+  return createSuccessParseResult(options);
 }

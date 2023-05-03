@@ -1,10 +1,9 @@
-import type { Options } from './cli-config';
+import { OptionType } from './option-type';
+import { ParseResultOption } from './parse-result-option';
 
-export const OPTION_TYPE_LIST = ['string', 'boolean'] as const;
-
-export type OptionType = (typeof OPTION_TYPE_LIST)[number];
-
-export type OptionRequiredFunction = (options: Options) => boolean;
+export type CliOptionRequiredFunction = (
+  options: Readonly<Record<string, ParseResultOption>>
+) => boolean;
 
 export const OPTION_SHORT_NAME_LIST = [
   'a',
@@ -35,34 +34,37 @@ export const OPTION_SHORT_NAME_LIST = [
   'z',
 ] as const;
 
-export type OptionShortName = (typeof OPTION_SHORT_NAME_LIST)[number];
+export type CliOptionShortName = (typeof OPTION_SHORT_NAME_LIST)[number];
 
-export interface OptionBase {
+export interface CliOptionBase {
   readonly type: OptionType;
   readonly description: string;
-  readonly short?: OptionShortName;
-  readonly required?: boolean | OptionRequiredFunction;
+  readonly short?: CliOptionShortName;
+  readonly required?: boolean | CliOptionRequiredFunction;
 }
 
-export interface OptionStringBase extends OptionBase {
+export interface CliOptionStringBase extends CliOptionBase {
   readonly type: 'string';
   readonly choices?: readonly string[];
   readonly multiple?: boolean;
 }
 
-export interface OptionStringSingle extends OptionStringBase {
+export interface CliOptionStringSingle extends CliOptionStringBase {
   readonly multiple?: false;
   readonly defaultValue?: string;
 }
 
-export interface OptionStringMultiple extends OptionStringBase {
+export interface CliOptionStringMultiple extends CliOptionStringBase {
   readonly multiple: true;
   readonly defaultValue?: readonly string[];
 }
 
-export interface OptionBoolean extends OptionBase {
+export interface CliOptionBoolean extends CliOptionBase {
   readonly type: 'boolean';
   readonly defaultValue?: boolean;
 }
 
-export type Option = OptionStringSingle | OptionStringMultiple | OptionBoolean;
+export type CliOption =
+  | CliOptionStringSingle
+  | CliOptionStringMultiple
+  | CliOptionBoolean;

@@ -1,12 +1,13 @@
 import {
   NormalizedOptionName,
-  Option,
-  Options,
+  CliOption,
+  CliOptions,
   ParseResult,
   ParseResultOption,
 } from '../../types';
+import { camelCaseToKebabCase } from '../util';
 
-export function createSuccessResult(
+export function createSuccessParseResult(
   options: readonly ParseResultOption[]
 ): ParseResult {
   return {
@@ -15,7 +16,7 @@ export function createSuccessResult(
   };
 }
 
-export function createErrorResult(message: string): ParseResult {
+export function createErrorParseResult(message: string): ParseResult {
   return {
     success: false,
     message,
@@ -23,9 +24,9 @@ export function createErrorResult(message: string): ParseResult {
 }
 
 export function getOptionNameMap(
-  options: Options
-): ReadonlyMap<string, Option> {
-  const optionNameMap = new Map<string, Option>();
+  options: CliOptions
+): ReadonlyMap<string, CliOption> {
+  const optionNameMap = new Map<string, CliOption>();
 
   for (const [key, option] of Object.entries(options)) {
     const name = camelCaseToKebabCase(key);
@@ -36,7 +37,7 @@ export function getOptionNameMap(
 }
 
 export function getOptionShortToLongNameMap(
-  options: Options
+  options: CliOptions
 ): ReadonlyMap<string, string> {
   const optionShortToLongNameMap = new Map<string, string>();
 
@@ -75,15 +76,6 @@ export function getOptionsFromString(optionsStr: string): readonly string[] {
     ? [optionsStr.slice(2)]
     : // eslint-disable-next-line unicorn/no-useless-spread
       [...optionsStr.slice(1)];
-}
-
-function camelCaseToKebabCase(value: string): string {
-  return value
-    .replace(
-      /([\p{Lowercase_Letter}\p{Uppercase_Letter}\d])(\p{Uppercase_Letter})/gu,
-      '$1-$2'
-    )
-    .toLowerCase();
 }
 
 export function normalizeOptionName(

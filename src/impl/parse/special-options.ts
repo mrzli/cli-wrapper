@@ -1,6 +1,6 @@
 import { ParseResult } from '../../types';
 import { getErrorMessageSpecialOptionNeedsToBeStandalone } from './messages';
-import { createErrorResult, createSuccessResult } from './parse-util';
+import { createErrorParseResult, createSuccessParseResult } from './parse-util';
 
 export function handleSpecialOptions(
   args: readonly string[]
@@ -23,14 +23,15 @@ function createSpecialOptionResult(
   isOnlyArgument: boolean
 ): ParseResult {
   if (!isOnlyArgument) {
-    return createErrorResult(
+    return createErrorParseResult(
       getErrorMessageSpecialOptionNeedsToBeStandalone(optionName)
     );
   }
-  return createSuccessResult([
+  return createSuccessParseResult([
     {
       type: 'boolean',
       name: optionName,
+      value: true,
     },
   ]);
 }

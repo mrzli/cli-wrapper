@@ -1,4 +1,4 @@
-import { OptionType } from './option';
+import { OptionType } from './option-type';
 
 export interface ParseResultOptionBase {
   readonly type: OptionType;
@@ -7,24 +7,24 @@ export interface ParseResultOptionBase {
 
 export interface ParseResultOptionStringBase extends ParseResultOptionBase {
   readonly type: 'string';
-  readonly multiple?: boolean;
+  readonly multiple: boolean;
 }
 
 export interface ParseResultOptionStringSingle
   extends ParseResultOptionStringBase {
-  readonly multiple?: false;
-  readonly value?: string | undefined;
+  readonly multiple: false;
+  readonly value: string;
 }
 
 export interface ParseResultOptionStringMultiple
   extends ParseResultOptionStringBase {
   readonly multiple: true;
-  readonly value?: readonly string[] | undefined;
+  readonly value: readonly string[];
 }
 
 export interface ParseResultOptionBoolean extends ParseResultOptionBase {
   readonly type: 'boolean';
-  readonly value?: boolean | undefined;
+  readonly value: boolean;
 }
 
 export type ParseResultOption =
