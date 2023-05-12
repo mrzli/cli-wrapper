@@ -38,7 +38,6 @@ export type CliOptionShortName = (typeof OPTION_SHORT_NAME_LIST)[number];
 
 export interface CliOptionBase {
   readonly type: OptionType;
-  readonly description: string;
   readonly short?: CliOptionShortName;
   readonly required?: boolean | CliOptionRequiredFunction;
 }

@@ -70,11 +70,9 @@ describe('processCli', () => {
         config: {
           type: 'string',
           short: 'c',
-          description: 'Path to config file',
         },
         multiWord: {
           type: 'string',
-          description: 'A multi word option',
         },
       });
 
@@ -129,12 +127,10 @@ describe('processCli', () => {
         config: {
           type: 'string',
           short: 'c',
-          description: 'Path to config file',
         },
         output: {
           type: 'string',
           short: 'o',
-          description: 'Path to output directory',
         },
       });
 
@@ -210,7 +206,6 @@ describe('processCli', () => {
       const CONFIG = createConfig({
         values: {
           type: 'string',
-          description: 'Some values',
           multiple: true,
         },
       });
@@ -235,17 +230,14 @@ describe('processCli', () => {
       const CONFIG = createConfig({
         config: {
           type: 'string',
-          description: 'Path to config file',
           short: 'c',
         },
         aBoolean: {
           type: 'boolean',
-          description: 'Some boolean',
           short: 'a',
         },
         bBoolean: {
           type: 'boolean',
-          description: 'Some other boolean',
           short: 'b',
         },
       });
@@ -394,7 +386,6 @@ describe('processCli', () => {
       const CONFIG = createConfig({
         config: {
           type: 'string',
-          description: 'Path to config file',
           short: 'c',
           required: true,
         },
@@ -424,12 +415,10 @@ describe('processCli', () => {
       const CONFIG = createConfig({
         output: {
           type: 'string',
-          description: 'Path to output directory',
           short: 'o',
         },
         file: {
           type: 'string',
-          description: 'Path to file',
           short: 'f',
           required: (options) => {
             return options['output'] !== undefined;
@@ -470,19 +459,16 @@ describe('processCli', () => {
       const CONFIG = createConfig({
         config: {
           type: 'string',
-          description: 'Path to config file',
           short: 'c',
           defaultValue: 'config.json',
         },
         values: {
           type: 'string',
-          description: 'Some values',
           multiple: true,
           defaultValue: ['a', 'b'],
         },
         flag: {
           type: 'boolean',
-          description: 'flag',
           defaultValue: true,
         },
       });
@@ -516,13 +502,11 @@ describe('processCli', () => {
       const CONFIG = createConfig({
         singleValue: {
           type: 'string',
-          description: 'Some value',
           short: 's',
           choices: ['a', 'b', 'c'],
         },
         multiValues: {
           type: 'string',
-          description: 'Some values',
           short: 'm',
           multiple: true,
           choices: ['a', 'b', 'c'],
