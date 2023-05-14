@@ -31,7 +31,7 @@ Examples
 `,
     {
       meta: {
-        version: readPackageJsonSync(join(__dirname, '..')).version,
+        version: readPackageJsonSync(join(__dirname, '..')).version ?? '',
       },
       options: {
         config: {
