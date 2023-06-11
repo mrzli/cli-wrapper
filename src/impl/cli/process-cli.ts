@@ -10,7 +10,7 @@ export function processCli(
   const parseResult = parse(args, config);
   if (!parseResult.success) {
     return {
-      success: false,
+      type: 'error',
       message: parseResult.message,
       options: {},
     };
@@ -18,7 +18,7 @@ export function processCli(
 
   if (parseResult.options.some((o) => o.name === 'version')) {
     return {
-      success: true,
+      type: 'completed',
       message: `Version ${config.meta.version}`,
       options: {},
     };
@@ -26,7 +26,7 @@ export function processCli(
 
   if (parseResult.options.some((o) => o.name === 'help')) {
     return {
-      success: true,
+      type: 'completed',
       message: description,
       options: {},
     };
@@ -35,14 +35,14 @@ export function processCli(
   const mergeResult = mergeCliOptions(config.options, parseResult.options);
   if (!mergeResult.success) {
     return {
-      success: false,
+      type: 'error',
       message: mergeResult.message,
       options: {},
     };
   }
 
   return {
-    success: true,
+    type: 'execute',
     message: undefined,
     options: Object.fromEntries(mergeResult.nameOptionPairs),
   };

@@ -1,7 +1,8 @@
 import { CliResultOptions } from './cli-result';
+import { CliResultType } from './cli-result-type';
 
 export interface CliResultObject {
-  readonly success: boolean;
+  readonly type: CliResultType;
   readonly message: string | undefined;
   readonly options: CliResultOptions;
 }

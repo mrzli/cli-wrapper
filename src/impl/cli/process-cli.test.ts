@@ -21,29 +21,29 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: ['-v'],
-          expected: createSuccessMessage('Version 1.0.0'),
+          expected: createCompletedResult('Version 1.0.0'),
         },
         {
           input: ['--version'],
-          expected: createSuccessMessage('Version 1.0.0'),
+          expected: createCompletedResult('Version 1.0.0'),
         },
         {
           input: ['-h'],
-          expected: createSuccessMessage(EXAMPLE_DESCRIPTION),
+          expected: createCompletedResult(EXAMPLE_DESCRIPTION),
         },
         {
           input: ['--help'],
-          expected: createSuccessMessage(EXAMPLE_DESCRIPTION),
+          expected: createCompletedResult(EXAMPLE_DESCRIPTION),
         },
         {
           input: '-v -c config.json'.split(' '),
-          expected: createErrorMessage(
+          expected: createErrorResult(
             getErrorMessageSpecialOptionNeedsToBeStandalone('version')
           ),
         },
         {
           input: '-h -c config.json'.split(' '),
-          expected: createErrorMessage(
+          expected: createErrorResult(
             getErrorMessageSpecialOptionNeedsToBeStandalone('help')
           ),
         },
@@ -58,7 +58,7 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: [],
-          expected: createSuccessOptions({}),
+          expected: createExecuteResult({}),
         },
       ];
 
@@ -79,7 +79,7 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: ['--config', 'config.json'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             config: {
               type: 'string',
               multiple: false,
@@ -89,7 +89,7 @@ describe('processCli', () => {
         },
         {
           input: ['-c', 'config.json'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             config: {
               type: 'string',
               multiple: false,
@@ -99,7 +99,7 @@ describe('processCli', () => {
         },
         {
           input: ['--multi-word', 'value'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             multiWord: {
               type: 'string',
               multiple: false,
@@ -109,7 +109,7 @@ describe('processCli', () => {
         },
         {
           input: ['--config', 'path with space/config.json'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             config: {
               type: 'string',
               multiple: false,
@@ -137,39 +137,39 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: ['-u'],
-          expected: createErrorMessage("Unknown option 'u'."),
+          expected: createErrorResult("Unknown option 'u'."),
         },
         {
           input: ['--unknown'],
-          expected: createErrorMessage("Unknown option 'unknown'."),
+          expected: createErrorResult("Unknown option 'unknown'."),
         },
         {
           input: ['-U'],
-          expected: createErrorMessage("Unknown option 'u'."),
+          expected: createErrorResult("Unknown option 'u'."),
         },
         {
           input: ['--no-unknown'],
-          expected: createErrorMessage("Unknown option 'unknown'."),
+          expected: createErrorResult("Unknown option 'unknown'."),
         },
         {
           input: ['some-argument'],
-          expected: createErrorMessage("Expected option, got 'some-argument'."),
+          expected: createErrorResult("Expected option, got 'some-argument'."),
         },
         {
           input: ['-c'],
-          expected: createErrorMessage("Option 'config' requires a value."),
+          expected: createErrorResult("Option 'config' requires a value."),
         },
         {
           input: ['-c', '-o', 'output'],
-          expected: createErrorMessage("Option 'config' requires a value."),
+          expected: createErrorResult("Option 'config' requires a value."),
         },
         {
           input: ['-c', 'config.json', 'some-argument'],
-          expected: createErrorMessage("Expected option, got 'some-argument'."),
+          expected: createErrorResult("Expected option, got 'some-argument'."),
         },
         {
           input: ['-c', 'config.json', '-c', 'config.json'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "Option 'config' is used more than once."
           ),
         },
@@ -194,7 +194,7 @@ describe('processCli', () => {
         '-1',
       ].map((optionName) => ({
         input: [optionName],
-        expected: createErrorMessage(
+        expected: createErrorResult(
           getErrorMessageInvalidOptionFormat(optionName)
         ),
       }));
@@ -213,7 +213,7 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: ['--values', 'a,b,c'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             values: {
               type: 'string',
               multiple: true,
@@ -245,7 +245,7 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: ['--a-boolean'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: true,
@@ -254,13 +254,13 @@ describe('processCli', () => {
         },
         {
           input: ['--a-boolean', 'value'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "Boolean option 'a-boolean' does not take a value."
           ),
         },
         {
           input: ['--b-boolean'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             bBoolean: {
               type: 'boolean',
               value: true,
@@ -269,7 +269,7 @@ describe('processCli', () => {
         },
         {
           input: ['--a-boolean', '--b-boolean'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: true,
@@ -282,7 +282,7 @@ describe('processCli', () => {
         },
         {
           input: ['-a', '-b'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: true,
@@ -295,7 +295,7 @@ describe('processCli', () => {
         },
         {
           input: ['-ab'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: true,
@@ -308,7 +308,7 @@ describe('processCli', () => {
         },
         {
           input: ['--no-a-boolean', '--no-b-boolean'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: false,
@@ -321,7 +321,7 @@ describe('processCli', () => {
         },
         {
           input: ['-A', '-B'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: false,
@@ -334,7 +334,7 @@ describe('processCli', () => {
         },
         {
           input: ['-AB'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             aBoolean: {
               type: 'boolean',
               value: false,
@@ -347,33 +347,33 @@ describe('processCli', () => {
         },
         {
           input: ['-abu', 'value'],
-          expected: createErrorMessage("Unknown option 'u'."),
+          expected: createErrorResult("Unknown option 'u'."),
         },
         {
           input: ['-abU', 'value'],
-          expected: createErrorMessage("Unknown option 'u'."),
+          expected: createErrorResult("Unknown option 'u'."),
         },
         {
           input: ['-ab', 'value'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "Option list 'ab' does not take a value."
           ),
         },
         {
           input: ['-abc'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "'config' is not a boolean option. Only boolean options can be part of options list."
           ),
         },
         {
           input: ['--no-config'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "'config' is not a boolean option. Only boolean options can be negated."
           ),
         },
         {
           input: ['-C'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "'config' is not a boolean option. Only boolean options can be negated."
           ),
         },
@@ -394,11 +394,11 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: [],
-          expected: createErrorMessage("Missing required option 'config'."),
+          expected: createErrorResult("Missing required option 'config'."),
         },
         {
           input: ['-c', 'config.json'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             config: {
               type: 'string',
               multiple: false,
@@ -429,15 +429,15 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: [],
-          expected: createSuccessOptions({}),
+          expected: createExecuteResult({}),
         },
         {
           input: ['-o', 'output'],
-          expected: createErrorMessage("Missing required option 'file'."),
+          expected: createErrorResult("Missing required option 'file'."),
         },
         {
           input: ['-o', 'output', '-f', 'file'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             output: {
               type: 'string',
               multiple: false,
@@ -476,7 +476,7 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: [],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             config: {
               type: 'string',
               multiple: false,
@@ -516,7 +516,7 @@ describe('processCli', () => {
       const EXAMPLES: readonly SimpleProcessCliExample[] = [
         {
           input: ['-s', 'a', '-m', 'a,b'],
-          expected: createSuccessOptions({
+          expected: createExecuteResult({
             singleValue: {
               type: 'string',
               multiple: false,
@@ -531,13 +531,13 @@ describe('processCli', () => {
         },
         {
           input: ['-s', 'd'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "Invalid option value: 'd'. Valid choices are: a,b,c."
           ),
         },
         {
           input: ['-m', 'a,d'],
-          expected: createErrorMessage(
+          expected: createErrorResult(
             "Invalid option value: 'd'. Valid choices are: a,b,c."
           ),
         },
@@ -557,25 +557,25 @@ function createConfig(options: CliOptions): CliConfig {
   };
 }
 
-function createSuccessOptions(options: CliResultOptions): CliResultObject {
+function createExecuteResult(options: CliResultOptions): CliResultObject {
   return {
-    success: true,
+    type: 'execute',
     message: undefined,
     options,
   };
 }
 
-function createSuccessMessage(message: string): CliResultObject {
+function createCompletedResult(message: string): CliResultObject {
   return {
-    success: true,
+    type: 'completed',
     message,
     options: {},
   };
 }
 
-function createErrorMessage(message: string): CliResultObject {
+function createErrorResult(message: string): CliResultObject {
   return {
-    success: false,
+    type: 'error',
     message,
     options: {},
   };
